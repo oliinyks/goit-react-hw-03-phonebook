@@ -70,10 +70,7 @@ class Form extends Component {
     );
   }
 }
-
 Form.propTypes = {
-	name: PropTypes.string,
-	number: PropTypes.string,
-};
-
+onSubmit: PropTypes.func.isRequired,
+}
 export default Form;

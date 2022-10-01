@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 
@@ -13,7 +12,6 @@ class App extends React.Component {
   state = {
     contacts: [],
     filter: '',
-    visible: false,
   };
 
   formSubmitHandler = ({ name, number }) => {
@@ -24,9 +22,9 @@ class App extends React.Component {
     };
 
     const filter = this.state.contacts.filter(
-      ({ name }) => name === newContact.name
+      ({ name }) => name.toLowerCase() === newContact.name.toLowerCase()
     );
-
+	 
     if (filter.length) {
       Notiflix.Notify.failure('You already have a contact with that name');
       return;
@@ -34,7 +32,6 @@ class App extends React.Component {
 
     this.setState(({ contacts }) => ({
       contacts: [...contacts, newContact],
-      visible: true,
     }));
     Notiflix.Notify.success('You have just created a new contact');
   };
@@ -60,7 +57,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { filter, visible } = this.state;
+    const { filter, contacts } = this.state;
     const visibleContacts = this.getVisibleContacts();
 
     return (
@@ -69,7 +66,7 @@ class App extends React.Component {
         <Form onSubmit={this.formSubmitHandler} />
 
         <h2 className={css.subtitle}>Contacts</h2>
-        {visible ? (
+        {contacts.length > 0 ? (
           <>
             <Filter
               onFilterChange={this.changeFilter}
@@ -87,7 +84,4 @@ class App extends React.Component {
     );
   }
 }
-App.protoTypes = {
-  visible: PropTypes.bool.isRequired,
-};
 export default App;
